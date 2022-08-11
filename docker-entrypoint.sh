@@ -52,15 +52,17 @@ ssh-keygen -A 1>/dev/null
 
 log "Applying configuration for 'root' user ..."
 
-if [[ "${ROOT_LOGIN_UNLOCKED}" == "true" ]] ; then
+if [[ "${SSH_ENABLE_ROOT}" == "true" ]] ; then
 
     # generate random root password
     if [[ -z "${ROOT_PASSWORD}" ]]; then
         log "    generating random password for user 'root'"
         ROOT_PASSWORD="$(generate_passwd)"
+        #usermod -p '' root
     fi
 
     echo "root:${ROOT_PASSWORD}" | chpasswd &>/dev/null
+    log "    root password: '${ROOT_PASSWORD}'"
     log "    password for user 'root' set"
     log "warning" "    user 'root' is now UNLOCKED"
 
@@ -81,7 +83,7 @@ else
 
     sed -i "s/#PermitRootLogin.*/PermitRootLogin no/" /etc/ssh/sshd_config
     log "    disabled login for user 'root'"
-    log "    user 'root' is now LOCKED"
+    log "    user 'root' is now LOCKED by default. Set SSH_ENABLE_ROOT to unlock the account."
 
 fi
 
