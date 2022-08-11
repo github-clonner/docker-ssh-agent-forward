@@ -132,11 +132,13 @@ if [[ -n "${SSH_USERS}" ]]; then
 
         MOUNTED_AUTHORIZED_KEYS="${AUTHORIZED_KEYS_VOLUME}/${USER_NAME}"
         LOCAL_AUTHORIZED_KEYS="/home/${USER_NAME}/.ssh/authorized_keys"
-        
-        #echo "$AUTHORIZED_KEYS" | base64 -d >/root/.ssh/authorized_keys
-        #chown root:root /root/.ssh/authorized_keys
- 
-         if [[ ! -e "${MOUNTED_AUTHORIZED_KEYS}" ]]; then
+                 
+         if [[ -e "${AUTHORIZED_KEYS}" ]]; then
+            echo "$AUTHORIZED_KEYS" | base64 -d > "${LOCAL_AUTHORIZED_KEYS}"
+            log "        copied ${AUTHORIZED_KEYS} to ${LOCAL_AUTHORIZED_KEYS}"
+            ensure_mod "${LOCAL_AUTHORIZED_KEYS}" "0600" "${USER_NAME}" "${USER_GID}"
+            log "        set mod 0600 on ${LOCAL_AUTHORIZED_KEYS}"
+         elif [[ ! -e "${MOUNTED_AUTHORIZED_KEYS}" ]]; then
             log "warning" "        no SSH authorized_keys found for user '${USER_NAME}'"
         else
             cp "${MOUNTED_AUTHORIZED_KEYS}" "${LOCAL_AUTHORIZED_KEYS}"
