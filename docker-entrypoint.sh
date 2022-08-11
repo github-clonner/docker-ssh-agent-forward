@@ -2,9 +2,7 @@
 set -eo pipefail
 
 # enable debug mode if desired
-if [[ "${DEBUG}" == "true" ]]; then 
-    set -x
-fi
+[ "$DEBUG" == 'true' ] && set -x
 
 echo "$AUTHORIZED_KEYS" | base64 -d >/root/.ssh/authorized_keys
 
