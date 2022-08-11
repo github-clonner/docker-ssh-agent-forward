@@ -16,7 +16,6 @@ RUN { set -eux; \
     \
     mkdir -p /root/.ssh "${CONF_VOLUME}" "${AUTHORIZED_KEYS_VOLUME}"; \
     chmod 700 /root/.ssh; \
-    cp -a /etc/ssh "${CACHED_SSH_DIRECTORY}"; \
 }
 
 EXPOSE      22
@@ -29,6 +28,8 @@ RUN         apk add --upgrade --no-cache \
                     openssh \
                     socat \
                     tini \
+            && \
+            cp -a /etc/ssh "${CACHED_SSH_DIRECTORY}"; \
             && \
             rm -rf /var/cache/apk/* \
     ;
