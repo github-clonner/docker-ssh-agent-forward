@@ -7,8 +7,8 @@ ENV         CONF_VOLUME="/conf.d"
 ENV         OPENSSH_VERSION="${OPENSSH_VERSION}" \
             CACHED_SSH_DIRECTORY="${CONF_VOLUME}/ssh" \
             AUTHORIZED_KEYS_VOLUME="${CONF_VOLUME}/authorized_keys" \
-            ROOT_KEYPAIR_LOGIN_ENABLED="false" \
-            ROOT_LOGIN_UNLOCKED="false" \
+            ROOT_KEYPAIR_LOGIN_ENABLED="true" \
+            ROOT_LOGIN_UNLOCKED="true" \
             USER_LOGIN_SHELL="/bin/bash" \
             USER_LOGIN_SHELL_FALLBACK="/bin/ash"
 
