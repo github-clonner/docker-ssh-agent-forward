@@ -12,27 +12,21 @@ ENV         OPENSSH_VERSION="${OPENSSH_VERSION}" \
             USER_LOGIN_SHELL="/bin/bash" \
             USER_LOGIN_SHELL_FALLBACK="/bin/ash"
 
-RUN { set -eux; \
-    \
-    mkdir -p /root/.ssh "${CONF_VOLUME}" "${AUTHORIZED_KEYS_VOLUME}"; \
-    chmod 700 /root/.ssh; \
+RUN         { set -eux; \
+            \
+            mkdir -p /root/.ssh "${CONF_VOLUME}" "${AUTHORIZED_KEYS_VOLUME}"; \
+            chmod 700 /root/.ssh; \
 }
 
 EXPOSE      22
 VOLUME      ["/ssh-agent", "/etc/ssh"]
 
-RUN         apk add --upgrade --no-cache \
-                    bash \
-                    bash-completion \
-                    rsync \
-                    openssh \
-                    socat \
-                    tini \
-            && \
+RUN         { set -eux; \
+            \ 
+            apk add --upgrade --no-cache bash bash-completion rsync openssh socat tini; \
             cp -a /etc/ssh "${CACHED_SSH_DIRECTORY}"; \
-            && \
-            rm -rf /var/cache/apk/* \
-    ;
+            rm -rf /var/cache/apk/*; \
+}
 
 COPY        docker-entrypoint.sh /
 COPY        ssh-entrypoint.sh /
