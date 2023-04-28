@@ -17,6 +17,7 @@ docker volume create --name "${VOLUME_NAME}"
 docker run \
   --name "${CONTAINER_NAME}" \
   -e AUTHORIZED_KEYS="${AUTHORIZED_KEYS}" \
+  -e ROOT_KEYPAIR_LOGIN_ENABLED=true \
   -v ${VOLUME_NAME}:/ssh-agent \
   -d \
   -p "${HOST_PORT}:22" \
